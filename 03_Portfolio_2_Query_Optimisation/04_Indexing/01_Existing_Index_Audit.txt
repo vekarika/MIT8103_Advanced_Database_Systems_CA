@@ -1,0 +1,88 @@
+MIT 8103: ADVANCED DATABASE SYSTEMS
+PORTFOLIO 2: QUERY PROCESSING AND OPTIMISATION
+
+PROJECT: CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+
+FILE: 01_Existing_Index_Audit.txt
+
+1. PURPOSE
+
+This audit records the indexes currently defined in the CloudMart
+PostgreSQL database before additional indexing experiments.
+
+2. AUDIT METHOD
+
+The PostgreSQL system view pg_indexes was queried for the public
+schema.
+
+The query returned 16 index definitions across nine tables.
+
+3. EXISTING INDEX DISTRIBUTION
+
+address: 2 indexes
+category: 2 indexes
+customer: 2 indexes
+customer_order: 1 index
+delivery: 2 indexes
+inventory: 2 indexes
+order_item: 2 indexes
+payment: 2 indexes
+product: 1 index
+
+Total: 16 indexes.
+
+4. INDEX OBSERVATIONS
+
+Primary-key indexes exist on all nine tables.
+
+Unique indexes enforce customer email uniqueness, category name
+uniqueness, inventory product uniqueness, delivery tracking number
+uniqueness, and payment transaction reference uniqueness.
+
+The order_item table has a unique composite index on
+(order_id, product_id). Because order_id is the leading column,
+this index can support lookups by order_id.
+
+The customer_order table has no dedicated index on customer_id.
+
+The product table has no dedicated index on category_id.
+
+5. OPTIMISATION CANDIDATES
+
+Candidate 1:
+customer_order(customer_id)
+
+Reason:
+The customer order history query filters customer_order by
+customer_id.
+
+Candidate 2:
+product(category_id)
+
+Reason:
+Category-based product retrieval may benefit from an index as
+the product catalogue grows.
+
+6. REDUNDANCY CONSIDERATIONS
+
+A separate index on order_item(order_id) will not be created
+at this stage because the existing unique composite index begins
+with order_id.
+
+Duplicate primary-key indexes will not be created.
+
+7. LIMITATIONS
+
+The current sample database is small. Additional indexes may
+not improve measured execution time on this dataset.
+
+The selected candidates must be tested using execution plans
+and performance measurements before any improvement is claimed.
+
+8. CONCLUSION
+
+The index audit identifies customer_order(customer_id) and
+product(category_id) as possible candidates for controlled
+performance testing.
+
+These candidates will be evaluated against the baseline plans.

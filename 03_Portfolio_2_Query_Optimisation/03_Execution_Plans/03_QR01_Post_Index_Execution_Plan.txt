@@ -1,0 +1,50 @@
+MIT 8103: Advanced Database Systems
+Portfolio 2: Query Processing and Optimisation
+
+QR-01: Customer Order History
+Post-Index Execution Plan Analysis
+
+1. Index Created
+   Index name: idx_customer_order_customer_id
+   Table: customer_order
+   Indexed column: customer_id
+   Index type: B-tree
+
+2. Execution Plan
+   PostgreSQL selected a sequential scan on customer_order
+   with the filter customer_id = 1.
+
+   The new customer ID index was not used by the planner.
+
+   PostgreSQL used a bitmap heap scan on order_item,
+   supported by the existing uq_order_item_product index.
+
+3. Execution Statistics
+   Rows returned: 1 order
+   Matching order items: 2
+   Shared buffer hits: 6
+   Planning time: 6.585 ms
+   Execution time: 2.386 ms
+
+4. Analysis
+   The index was created successfully, but PostgreSQL did not
+   use it for customer_order in this execution plan.
+
+   The customer_order table contains only four records.
+   For such a small table, a sequential scan may be more
+   efficient than using an index.
+
+   The execution time cannot be used alone to conclude that
+   performance improved or deteriorated because execution
+   conditions and plans can vary between runs.
+
+5. Conclusion
+   The experiment demonstrates that creating an index does
+   not guarantee its use by the PostgreSQL query planner.
+
+   Testing with a larger dataset and repeated measurements
+   is recommended to evaluate the potential performance
+   benefit of the index.
+
+   The baseline and post-index plans should be retained
+   separately for comparison.

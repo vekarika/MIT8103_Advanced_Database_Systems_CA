@@ -1,0 +1,86 @@
+MIT 8103: ADVANCED DATABASE SYSTEMS
+PORTFOLIO 2: QUERY PROCESSING AND OPTIMISATION
+
+PROJECT: CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+
+FILE: 01_QR01_Baseline_Performance.txt
+
+1. EXPERIMENT
+
+Query: QR-01 - Customer Order History
+Database: cloudmart_db
+DBMS: PostgreSQL 18
+Customer ID: 1
+
+The query was executed five times using EXPLAIN
+(ANALYZE, BUFFERS, TIMING OFF).
+
+2. RAW MEASUREMENTS
+
+Run 1:
+Planning time: 15.748 ms
+Execution time: 6.383 ms
+Shared buffer hits: 8
+
+Run 2:
+Planning time: 0.207 ms
+Execution time: 0.106 ms
+Shared buffer hits: 2
+
+Run 3:
+Planning time: 0.133 ms
+Execution time: 0.068 ms
+Shared buffer hits: 2
+
+Run 4:
+Planning time: 0.192 ms
+Execution time: 0.147 ms
+Shared buffer hits: 2
+
+Run 5:
+Planning time: 0.136 ms
+Execution time: 0.071 ms
+Shared buffer hits: 2
+
+3. SUMMARY STATISTICS
+
+Mean execution time: 1.355 ms
+Median execution time: 0.106 ms
+Minimum execution time: 0.068 ms
+Maximum execution time: 6.383 ms
+
+The mean is affected by the first run, which is substantially
+slower than the subsequent executions.
+
+The median is used as a more representative measure of typical
+execution time for this small experiment.
+
+4. BASELINE EXECUTION PLAN
+
+The query plan used sequential scans on customer_order and
+order_item, followed by a Hash Join, GroupAggregate, and Sort.
+
+The same general plan was observed across all five runs.
+
+5. INTERPRETATION
+
+The database contains four orders and six order items.
+Sequential scans are reasonable for tables of this size.
+
+The first execution was substantially slower than later runs.
+Execution timing can vary due to caching, operating-system
+activity, and other environmental factors.
+
+Small differences in later measurements should not automatically
+be interpreted as meaningful performance improvements.
+
+6. NEXT EXPERIMENT
+
+The next experiment will evaluate an index on
+customer_order(customer_id).
+
+The same query will be executed before and after the index
+change. Execution plans, timing, and buffer activity will be
+compared.
+
+No improvement is claimed at this stage.

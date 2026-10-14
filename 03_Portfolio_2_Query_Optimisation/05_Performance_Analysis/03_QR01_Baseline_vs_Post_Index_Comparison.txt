@@ -1,0 +1,119 @@
+MIT 8103: Advanced Database Systems
+Portfolio 2: Query Processing and Optimisation
+
+QR-01: Customer Order History
+Baseline vs. Post-Index Performance Comparison
+
+1. Objective
+
+The objective of this experiment was to evaluate whether
+adding an index to customer_order(customer_id) improved
+the performance of the QR-01 Customer Order History query.
+
+The baseline execution plan was captured before creating
+the index. The post-index plan was captured after creating
+the index and refreshing table statistics using ANALYZE.
+
+2. Experimental Configuration
+
+Database: cloudmart_db
+DBMS: PostgreSQL 18.6
+Query: QR-01 Customer Order History
+
+Additional index:
+idx_customer_order_customer_id
+
+Index definition:
+CREATE INDEX idx_customer_order_customer_id
+ON customer_order (customer_id);
+
+Each benchmark consisted of five executions using
+EXPLAIN (ANALYZE, BUFFERS, TIMING OFF).
+
+3. Performance Results
+
+Metric                 Baseline       Post-Index
+
+Run 1                  6.383 ms       6.600 ms
+Run 2                  0.106 ms       0.160 ms
+Run 3                  0.068 ms       0.187 ms
+Run 4                  0.147 ms       0.075 ms
+Run 5                  0.071 ms       0.074 ms
+
+Mean                   1.355 ms       1.419 ms
+Median                 0.106 ms       0.160 ms
+Minimum                0.068 ms       0.074 ms
+Maximum                6.383 ms       6.600 ms
+
+4. Execution Plan Comparison
+
+Baseline:
+The original plan used sequential scans on
+customer_order and order_item, followed by a hash join,
+aggregation, and sorting.
+
+Post-index:
+PostgreSQL used a sequential scan on customer_order,
+a nested loop, and a bitmap heap scan on order_item.
+The existing uq_order_item_product index supported
+the lookup of matching order items.
+
+The newly created idx_customer_order_customer_id index
+was not selected by the planner.
+
+5. Performance Analysis
+
+The baseline median execution time was 0.106 ms.
+The post-index median execution time was 0.160 ms.
+
+The post-index median was approximately 50.9% higher
+than the baseline median.
+
+The baseline mean was 1.355 ms, while the post-index
+mean was approximately 1.419 ms.
+
+These differences do not establish that the new index
+caused a performance regression. Both benchmarks contain
+a substantially slower first run, and the dataset is small.
+
+The customer_order table contains only four records.
+For a table of this size, a sequential scan may be cheaper
+than accessing an index.
+
+The execution plans also differed in join strategy.
+Consequently, the measurements should be interpreted as
+observations from this specific test environment rather
+than definitive evidence of the index's general performance.
+
+6. Conclusion
+
+The index was created successfully, but PostgreSQL did
+not use it for the tested QR-01 query.
+
+The experiment did not demonstrate a performance
+improvement from adding the index to the current dataset.
+
+Further evaluation with a larger, representative dataset
+and repeated measurements would be necessary to determine
+whether the index provides a benefit as the database grows.
+
+7. Limitations
+
+- The database contains only four customer orders.
+- Only five executions were measured in each benchmark.
+- The first execution was substantially slower than
+  subsequent executions.
+- The experiments were conducted on a local PostgreSQL
+  instance rather than a production workload.
+- Execution times may vary with caching, system activity,
+  and query planning overhead.
+
+8. Recommendation
+
+Retain the index as an experimental artifact for now.
+Evaluate its usefulness against a larger representative
+dataset and realistic query workload before deciding
+whether it should remain in a production design.
+
+Do not claim a performance improvement unless further
+measurements support that conclusion.

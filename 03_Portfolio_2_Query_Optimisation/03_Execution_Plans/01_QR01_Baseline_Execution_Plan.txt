@@ -1,0 +1,76 @@
+MIT 8103: ADVANCED DATABASE SYSTEMS
+PORTFOLIO 2: QUERY PROCESSING AND OPTIMISATION
+
+PROJECT: CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+
+FILE: 01_QR01_Baseline_Execution_Plan.txt
+
+1. QUERY IDENTIFICATION
+
+Query: QR-01 - Customer Order History
+Database: PostgreSQL 18
+Database name: cloudmart_db
+Customer ID: 1
+
+2. BASELINE EXECUTION METRICS
+
+Planning Time: 4.330 ms
+Execution Time: 0.277 ms
+Shared Buffer Hits: 8
+Rows Returned: 1
+
+3. EXECUTION PLAN OBSERVATIONS
+
+The query plan used sequential scans on customer_order and
+order_item.
+
+The customer_order scan applied the filter customer_id = 1.
+Four order records existed, and three were removed by the filter.
+
+The order_item scan processed six records.
+
+PostgreSQL used a Hash Join to associate order items with
+their parent orders.
+
+A GroupAggregate calculated the item count and order total.
+Sort operations were used for grouping and final ordering.
+
+4. PERFORMANCE INTERPRETATION
+
+The measured execution time was 0.277 milliseconds.
+
+The database contains only four orders and six order items.
+Sequential scans are reasonable for a dataset of this size.
+
+The presence of sequential scans does not, by itself, establish
+that the query is inefficient.
+
+5. OPTIMISATION HYPOTHESIS
+
+An index on customer_order(customer_id) may help PostgreSQL
+locate a customer's orders when the table grows.
+
+An index on order_item(order_id) may help queries that retrieve
+items belonging to a particular order.
+
+These are hypotheses to test, not confirmed performance
+improvements.
+
+6. COMPARISON REQUIREMENTS
+
+After indexing, the same query will be tested again.
+
+The comparison will consider:
+- Execution plan operators.
+- Planning time and execution time.
+- Buffer activity.
+- Correctness of the query results.
+
+Any claimed performance improvement must be supported by
+measured results.
+
+7. LIMITATIONS
+
+The dataset is small. Execution times may vary between runs,
+and PostgreSQL may continue to prefer sequential scans even
+after indexes are created.

@@ -1,0 +1,92 @@
+MIT 8103: ADVANCED DATABASE SYSTEMS
+PORTFOLIO 2: QUERY PROCESSING AND OPTIMISATION
+
+PROJECT: CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+
+1. PURPOSE
+
+This document defines the business questions that the CloudMart
+database must answer. These requirements will guide SQL query
+development, execution-plan analysis, indexing, and performance
+evaluation using PostgreSQL.
+
+2. BUSINESS QUERY REQUIREMENTS
+
+QR-01: CUSTOMER ORDER HISTORY
+Retrieve all orders placed by a specified customer, including
+the order date, order status, and calculated order total.
+
+QR-02: ORDER DETAILS
+Retrieve the items belonging to a specified order, including
+product name, quantity, unit price, and line subtotal.
+
+QR-03: PRODUCT CATALOGUE
+Retrieve active products and their categories, ordered by
+product name.
+
+QR-04: LOW-STOCK INVENTORY
+Identify products whose available quantities are at or below
+their configured reorder levels.
+
+QR-05: CUSTOMER ORDER SUMMARY
+Calculate the number of orders and total order value for each
+customer.
+
+QR-06: REVENUE BY PRODUCT
+Calculate the total value of order items for each product
+using quantity multiplied by unit price.
+
+QR-07: ORDER STATUS SUMMARY
+Count orders grouped by their current status.
+
+QR-08: CUSTOMER ORDER SEARCH
+Retrieve orders for a specified customer within a date range,
+ordered from newest to oldest.
+
+3. QUERY PERFORMANCE OBJECTIVES
+
+The queries should return correct results while avoiding
+unnecessary table scans, joins, sorting, and repeated work
+where appropriate.
+
+PostgreSQL EXPLAIN and EXPLAIN ANALYZE will be used to inspect
+query execution plans and measure execution behaviour.
+
+Indexes will be considered based on actual query predicates,
+join conditions, sorting requirements, and execution plans.
+
+Performance comparisons will record relevant plan details,
+execution times, and any observed changes after indexing.
+
+4. TESTING APPROACH
+
+The initial queries will be executed against the existing
+CloudMart sample database.
+
+Baseline execution plans and timings will be recorded before
+index changes. Suitable indexes will then be evaluated using
+the same queries.
+
+Query results will also be checked for correctness.
+
+5. LIMITATIONS
+
+The current sample database is small. Consequently, PostgreSQL
+may prefer sequential scans even when an index is available.
+
+Results from this sample dataset will not, by themselves,
+prove performance at large production scale.
+
+No performance improvement will be claimed without supporting
+execution-plan or timing evidence.
+
+6. EXPECTED DELIVERABLES
+
+- Query requirements document.
+- SQL query scripts.
+- Baseline execution plans.
+- Index creation scripts.
+- Post-index execution plans.
+- Performance comparison and analysis.
+- Evidence screenshots or saved query outputs.
+- Progressive Git commits documenting development.
