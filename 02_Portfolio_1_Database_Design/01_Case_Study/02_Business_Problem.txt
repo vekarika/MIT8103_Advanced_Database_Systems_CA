@@ -1,0 +1,83 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+
+Section 2: Business Problem Identification
+
+2.1 Background
+
+CloudMart is a simulated e-commerce business that manages customer accounts, product information, inventory, orders, payments, and deliveries. These activities generate related data that must be stored, maintained, and retrieved accurately.
+
+As the business expands, the volume of operational data and the number of transactions are expected to increase. Without a properly structured database, managing these interconnected records may become difficult, potentially affecting data accuracy, transaction reliability, operational efficiency, and the quality of business reporting.
+
+2.2 Problem Statement
+
+CloudMart requires a structured database system to manage its interconnected business records reliably. The proposed system must address potential data duplication, inconsistent inventory records, poorly organised order information, difficulties reconciling payments, and inadequate coordination of delivery records.
+
+The system must also support data integrity, efficient information retrieval, reliable transaction processing, and appropriate access controls. As the business grows, the database design should provide a foundation for query optimisation and future distributed or cloud deployment.
+
+The database must therefore be designed around clearly defined entities, relationships, constraints, and business rules.
+
+2.3 Identified Business Problems
+
+1. Data redundancy and inconsistency
+
+Customer, product, and order information may be duplicated when records are maintained independently. Changes to duplicated information may not be reflected consistently, resulting in inaccurate or conflicting records.
+
+2. Inventory accuracy
+
+Inventory quantities must remain accurate when products are ordered, stock is replenished, or orders are cancelled. Poor coordination between order processing and inventory updates could result in incorrect stock levels or overselling.
+
+3. Order management
+
+An order may contain multiple products, and the same product may appear in multiple orders. The database must represent these relationships correctly to support accurate order processing and retrieval.
+
+4. Payment reconciliation
+
+Payment records must be associated with the appropriate orders. Without clear relationships and transaction-status tracking, determining whether an order has been paid for could become difficult.
+
+5. Delivery tracking
+
+Delivery records must be associated with the relevant orders. The system needs to support the retrieval of delivery information and updates to delivery status.
+
+6. Data integrity
+
+The database must prevent invalid references and enforce appropriate rules on stored information. For example, an order should not reference a customer who does not exist in the database.
+
+7. Query performance
+
+The system must support efficient retrieval of product information, order histories, sales records, and inventory information. As the dataset grows, query execution and indexing will need to be evaluated.
+
+8. Transaction reliability and concurrency
+
+Multiple users may attempt to place orders or update inventory simultaneously. The database must support appropriate transaction controls to prevent conflicting changes and maintain consistency.
+
+9. Data access control
+
+Different users require different levels of access. The system should support appropriate permissions so that users can perform their assigned tasks without receiving unnecessary access to sensitive information.
+
+10. Scalability
+
+The database design should provide a foundation for handling increasing data volumes and transaction workloads. Distributed and cloud database approaches may be evaluated in a later portfolio activity.
+
+2.4 Need for a Database Solution
+
+A relational database management system is proposed as the primary foundation for CloudMart's structured operational data.
+
+The database will organise information into related tables, use primary and foreign keys to represent relationships, and apply appropriate constraints to protect data integrity.
+
+Transactions will be used to manage operations that require multiple changes to succeed or fail together. SQL queries and indexing will be evaluated to improve data retrieval, while NoSQL and distributed or cloud database concepts will be explored in the later portfolio activities.
+
+The final design will be based on the business requirements and will be refined as the project progresses.
+
+2.5 Expected Benefits
+
+The proposed database system is expected to provide:
+
+Better organisation of customer, product, and transaction records.
+Reduced unnecessary data duplication.
+Improved consistency of stored information.
+More reliable order and inventory processing.
+Clearer relationships between orders, payments, and deliveries.
+Better support for data integrity and transaction control.
+More efficient retrieval of operational information.
+A foundation for future scalability and advanced database techniques.

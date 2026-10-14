@@ -1,0 +1,301 @@
+CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+RELATIONAL SCHEMA DESIGN
+
+1. INTRODUCTION
+
+The relational schema translates the CloudMart Entity-Relationship Diagram
+into a collection of related tables. Each table represents an entity, and
+primary and foreign keys establish relationships between the tables.
+
+The design uses nine tables:
+Customer, Address, Category, Product, Inventory, Customer_Order,
+Order_Item, Payment, and Delivery.
+
+2. RELATIONAL SCHEMA NOTATION
+
+PK = Primary Key
+FK = Foreign Key
+UK = Unique Key or UNIQUE constraint
+NN = NOT NULL constraint
+
+A primary key uniquely identifies each record in a table.
+A foreign key references a key in another table and helps maintain
+referential integrity.
+A unique constraint prevents duplicate values in the specified column
+or combination of columns.
+A NOT NULL constraint prevents a column from containing NULL.
+
+3. TABLE DEFINITIONS
+
+3.1 CUSTOMER
+
+Customer(
+    customer_id PK,
+    first_name,
+    last_name,
+    email UK,
+    phone,
+    password_hash,
+    created_at,
+    status
+)
+
+Primary Key:
+customer_id
+
+Unique Constraint:
+email
+
+Purpose:
+Stores customer account and contact information.
+
+3.2 ADDRESS
+
+Address(
+    address_id PK,
+    customer_id FK,
+    address_line,
+    city,
+    state_region,
+    postal_code,
+    country,
+    address_type
+)
+
+Primary Key:
+address_id
+
+Foreign Key:
+customer_id references Customer(customer_id)
+
+Purpose:
+Stores customer delivery addresses. A customer may maintain multiple
+addresses, and each address belongs to one customer.
+
+3.3 CATEGORY
+
+Category(
+    category_id PK,
+    category_name,
+    description
+)
+
+Primary Key:
+category_id
+
+Purpose:
+Organises products into categories.
+
+3.4 PRODUCT
+
+Product(
+    product_id PK,
+    category_id FK,
+    product_name,
+    description,
+    selling_price,
+    status,
+    created_at
+)
+
+Primary Key:
+product_id
+
+Foreign Key:
+category_id references Category(category_id)
+
+Purpose:
+Stores product information and its associated category.
+
+3.5 INVENTORY
+
+Inventory(
+    inventory_id PK,
+    product_id FK, UK,
+    quantity_available,
+    reorder_level,
+    last_updated
+)
+
+Primary Key:
+inventory_id
+
+Foreign Key:
+product_id references Product(product_id)
+
+Unique Constraint:
+product_id
+
+Purpose:
+Stores the available quantity and reorder level for each product.
+
+Design Assumption:
+CloudMart initially operates a single central inventory location.
+Each product must have exactly one inventory record.
+
+3.6 CUSTOMER_ORDER
+
+Customer_Order(
+    order_id PK,
+    customer_id FK,
+    delivery_address_id FK,
+    order_date,
+    order_status
+)
+
+Primary Key:
+order_id
+
+Foreign Keys:
+customer_id references Customer(customer_id)
+delivery_address_id references Address(address_id)
+
+Purpose:
+Stores order information, the customer who placed the order, and the
+selected delivery address.
+
+Design Note:
+The delivery address must belong to the customer who placed the order.
+This ownership rule requires additional integrity enforcement beyond
+the two foreign keys listed above.
+
+3.7 ORDER_ITEM
+
+Order_Item(
+    order_item_id PK,
+    order_id FK,
+    product_id FK,
+    quantity,
+    unit_price
+)
+
+Primary Key:
+order_item_id
+
+Foreign Keys:
+order_id references Customer_Order(order_id)
+product_id references Product(product_id)
+
+Purpose:
+Stores individual products included in an order, their quantities,
+and the unit prices recorded for the order.
+
+Derived Value:
+Line subtotal = quantity * unit_price
+
+Design Note:
+Unit price is stored in Order_Item to preserve the price applicable
+to the purchase, even if the current Product selling price changes.
+
+3.8 PAYMENT
+
+Payment(
+    payment_id PK,
+    order_id FK,
+    amount,
+    payment_method,
+    transaction_reference,
+    payment_status,
+    payment_date
+)
+
+Primary Key:
+payment_id
+
+Foreign Key:
+order_id references Customer_Order(order_id)
+
+Purpose:
+Records payment attempts and payment information associated with
+an order.
+
+Design Note:
+An order may have multiple payment records, for example when an
+initial payment attempt fails and a later attempt succeeds.
+A payment record does not automatically mean that an order is paid.
+
+3.9 DELIVERY
+
+Delivery(
+    delivery_id PK,
+    order_id FK,
+    tracking_number,
+    delivery_status,
+    dispatch_date,
+    delivery_date
+)
+
+Primary Key:
+delivery_id
+
+Foreign Key:
+order_id references Customer_Order(order_id)
+
+Purpose:
+Records delivery and tracking information associated with an order.
+
+Design Note:
+An order may have multiple delivery records to support split
+deliveries under the initial business assumptions.
+
+4. DERIVED VALUES
+
+Two values are treated as derived rather than independently maintained
+source values.
+
+Line Subtotal:
+quantity * unit_price
+
+Order Total:
+The sum of the applicable order-item subtotals.
+
+These values can be calculated through queries or controlled database
+logic. If the implementation later stores them for performance reasons,
+the database must ensure that stored values remain consistent with
+their underlying records.
+
+The initial model excludes separate calculations for taxes, shipping
+charges, and discounts.
+
+5. REFERENTIAL INTEGRITY
+
+The following foreign-key relationships must be maintained:
+
+1. Address.customer_id -> Customer.customer_id
+2. Product.category_id -> Category.category_id
+3. Inventory.product_id -> Product.product_id
+4. Customer_Order.customer_id -> Customer.customer_id
+5. Customer_Order.delivery_address_id -> Address.address_id
+6. Order_Item.order_id -> Customer_Order.order_id
+7. Order_Item.product_id -> Product.product_id
+8. Payment.order_id -> Customer_Order.order_id
+9. Delivery.order_id -> Customer_Order.order_id
+
+Foreign keys prevent records from referencing nonexistent parent
+records. Additional constraints or transaction logic may be required
+to enforce business rules that involve multiple tables.
+
+6. DESIGN ASSUMPTIONS
+
+1. Each customer has a unique email address.
+2. Each product belongs to one category.
+3. Each product has exactly one inventory record in the initial model.
+4. An order belongs to one customer.
+5. Each order references one delivery address belonging to that customer.
+6. An order contains one or more order items when submitted.
+7. An order may have multiple payment records.
+8. An order may have multiple delivery records.
+9. Unit price is recorded in Order_Item to preserve the purchase price.
+10. Line subtotals and order totals are derived values.
+11. Discounts, taxes, shipping charges, and multiple inventory locations
+    are outside the initial model.
+
+7. CONCLUSION
+
+The CloudMart relational schema translates the ER diagram into nine
+related tables. Primary keys identify records, foreign keys establish
+relationships, and unique constraints support data integrity.
+
+Further work will define the exact database data types, NOT NULL rules,
+CHECK constraints, deletion and update behaviour, and additional
+mechanisms required to enforce business rules.

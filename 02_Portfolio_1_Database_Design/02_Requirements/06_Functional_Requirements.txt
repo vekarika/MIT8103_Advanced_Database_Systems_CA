@@ -1,0 +1,56 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 6: Functional Requirements
+6.1 Introduction
+
+The functional requirements define the operations that the CloudMart E-Commerce Management System database must support.
+
+These requirements are derived from the proposed business processes, intended users, and identified data requirements.
+
+They will guide the subsequent definition of business rules, entities, attributes, relationships, and database constraints.
+
+6.2 Customer Management
+
+The system shall support customer registration, retrieval, and authorised modification of customer information. It shall also support the management of addresses associated with customers.
+
+6.3 Product and Category Management
+
+The system shall support product registration, retrieval, and authorised updates. It shall also support the creation and maintenance of product categories and the association of products with their appropriate categories.
+
+6.4 Inventory Management
+
+The system shall maintain inventory quantities and support authorised inventory adjustments. It shall provide access to current stock information and support inventory changes associated with order processing.
+
+6.5 Order Management
+
+The system shall support the creation and retrieval of customer orders. Each order shall be associated with the relevant customer and shall support multiple order items.
+
+The system shall maintain the product, quantity, and applicable unit price associated with each order item. It shall also support the maintenance and retrieval of order statuses.
+
+6.6 Payment Management
+
+The system shall maintain payment records associated with orders. Payment records shall contain the information required to identify the transaction, amount, payment method, status, and relevant transaction reference.
+
+The system shall support authorised retrieval of payment information and reconciliation of payments with their associated orders.
+
+6.7 Delivery Management
+
+The system shall maintain delivery records associated with orders. It shall support the recording and retrieval of tracking information and delivery statuses, as well as authorised updates to delivery progress.
+
+6.8 Reporting and Information Retrieval
+
+The system shall support the retrieval of customer order histories, sales information, and inventory information.
+
+It shall also support queries that retrieve related information from multiple data categories.
+
+6.9 Requirement Validation
+
+The functional requirements will be validated during implementation through appropriate database operations, test data, SQL queries, and recorded results.
+
+Requirements involving inventory consistency, payment processing, concurrent transactions, and data integrity will be examined further when defining the business rules and transaction controls.
+
+6.10 Summary
+
+The functional requirements establish the operations that the CloudMart database must support.
+
+They provide the basis for defining the system's business rules and developing a database model that accurately represents the organisation's operational needs.

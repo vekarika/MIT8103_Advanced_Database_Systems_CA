@@ -1,0 +1,291 @@
+CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+DATABASE CONSTRAINTS AND INTEGRITY RULES
+
+1. INTRODUCTION
+
+Database constraints are rules applied to tables and columns to maintain
+data accuracy, consistency, and integrity.
+
+CloudMart will use primary keys, foreign keys, unique constraints,
+NOT NULL constraints, CHECK constraints, and additional transaction
+logic where necessary.
+
+2. PRIMARY KEY CONSTRAINTS
+
+Each table must have a primary key that uniquely identifies every record.
+
+The primary keys are:
+
+Customer: customer_id
+Address: address_id
+Category: category_id
+Product: product_id
+Inventory: inventory_id
+Customer_Order: order_id
+Order_Item: order_item_id
+Payment: payment_id
+Delivery: delivery_id
+
+Each primary key must be unique and must not contain NULL.
+
+3. UNIQUE CONSTRAINTS
+
+3.1 Customer Email
+
+Rule:
+Each customer must have a unique email address.
+
+Reason:
+Duplicate customer email addresses could cause account identification
+and communication problems.
+
+Implementation:
+Apply a UNIQUE constraint to Customer.email.
+
+3.2 Inventory Product Reference
+
+Rule:
+Each product may have only one inventory record in the initial
+single-location model.
+
+Reason:
+Multiple inventory records for one product would violate the
+initial inventory design.
+
+Implementation:
+Apply a UNIQUE constraint to Inventory.product_id.
+
+3.3 Transaction References
+
+Rule:
+Where a payment provider supplies a transaction reference, duplicate
+references must not be accepted when they identify the same transaction.
+
+Implementation:
+The exact uniqueness rule for Payment.transaction_reference depends
+on the payment provider and whether references are globally unique.
+This rule must be confirmed before defining the final constraint.
+
+4. FOREIGN KEY CONSTRAINTS
+
+The following foreign keys must reference existing records:
+
+Address.customer_id references Customer.customer_id.
+
+Product.category_id references Category.category_id.
+
+Inventory.product_id references Product.product_id.
+
+Customer_Order.customer_id references Customer.customer_id.
+
+Customer_Order.delivery_address_id references Address.address_id.
+
+Order_Item.order_id references Customer_Order.order_id.
+
+Order_Item.product_id references Product.product_id.
+
+Payment.order_id references Customer_Order.order_id.
+
+Delivery.order_id references Customer_Order.order_id.
+
+Reason:
+Foreign keys prevent orphaned records and maintain relationships
+between the tables.
+
+5. NOT NULL CONSTRAINTS
+
+The following fields are required under the initial design assumptions.
+
+Customer:
+customer_id, first_name, last_name, email, created_at, status.
+
+Address:
+address_id, customer_id, address_line, city, state_region, country,
+address_type.
+
+Category:
+category_id, category_name.
+
+Product:
+product_id, category_id, product_name, selling_price, status,
+created_at.
+
+Inventory:
+inventory_id, product_id, quantity_available, reorder_level,
+last_updated.
+
+Customer_Order:
+order_id, customer_id, delivery_address_id, order_date, order_status.
+
+Order_Item:
+order_item_id, order_id, product_id, quantity, unit_price.
+
+Payment:
+payment_id, order_id, amount, payment_method, payment_status.
+
+Delivery:
+delivery_id, order_id, delivery_status.
+
+Optional fields include descriptions, customer phone numbers, postal
+codes where not applicable, payment transaction references, and delivery
+tracking or date fields when they are not yet available.
+
+The final SQL implementation must review these assumptions against
+the operational requirements before applying NOT NULL constraints.
+
+6. CHECK CONSTRAINTS
+
+The following rules should be enforced through CHECK constraints
+where appropriate.
+
+6.1 Product Selling Price
+
+Rule:
+Product.selling_price must be greater than or equal to zero.
+
+6.2 Inventory Quantity
+
+Rule:
+Inventory.quantity_available must be greater than or equal to zero.
+
+6.3 Inventory Reorder Level
+
+Rule:
+Inventory.reorder_level must be greater than or equal to zero.
+
+6.4 Order Item Quantity
+
+Rule:
+Order_Item.quantity must be greater than zero.
+
+6.5 Order Item Unit Price
+
+Rule:
+Order_Item.unit_price must be greater than or equal to zero.
+
+6.6 Payment Amount
+
+Rule:
+Payment.amount must be greater than zero for an actual payment attempt.
+If the system needs to represent zero-value transactions, the rule
+must be revised accordingly.
+
+6.7 Status Values
+
+Rule:
+Customer, Product, Customer_Order, Payment, and Delivery statuses
+must contain only approved values.
+
+Implementation:
+The approved values will be defined before implementing the SQL
+CHECK constraints.
+
+7. CROSS-TABLE BUSINESS RULES
+
+Some rules cannot be enforced using a simple CHECK constraint on
+a single table.
+
+7.1 Delivery Address Ownership
+
+Rule:
+The delivery address selected for an order must belong to the same
+customer who placed the order.
+
+Reason:
+A valid address reference alone does not prove that the address
+belongs to the ordering customer.
+
+Possible Implementation:
+Use a composite foreign key involving Address.address_id and
+Address.customer_id, supported by a matching unique constraint,
+and store the customer_id alongside delivery_address_id in
+Customer_Order. Alternatively, enforce the rule through suitable
+database logic.
+
+The final implementation must select and document one approach.
+
+7.2 Order Items
+
+Rule:
+A submitted order must contain at least one order item.
+
+Reason:
+An order without items does not represent a valid submitted purchase.
+
+Possible Implementation:
+Enforce the rule through transaction or database logic when the order
+is submitted.
+
+7.3 Order Total
+
+Rule:
+The order total must equal the sum of the applicable order-item
+subtotals under the initial model.
+
+Calculation:
+Order total = SUM(quantity * unit_price)
+
+Reason:
+This prevents inconsistent totals from being presented to customers.
+
+Possible Implementation:
+Calculate the total through a query or controlled database logic.
+
+7.4 Inventory Availability
+
+Rule:
+Inventory quantity must not become negative when orders are processed.
+
+Reason:
+Overselling can occur when multiple transactions attempt to purchase
+the same stock concurrently.
+
+Possible Implementation:
+Use conditional updates or transactions with appropriate concurrency
+control.
+
+8. UPDATE AND DELETE BEHAVIOUR
+
+The following policies are proposed for the initial design.
+
+Customer and Address:
+An address used by a submitted order must not be changed or deleted
+in a way that alters the historical delivery destination.
+
+Product and Order_Item:
+Historical order items must preserve their recorded unit prices.
+Deleting a product must not destroy historical order information.
+
+Customer_Order and Order_Item:
+An order with associated items must not be deleted in a way that
+leaves orphaned order items or removes required transaction history.
+
+Customer_Order and Payment:
+Payment records must be preserved when they are needed for financial
+audit and transaction history.
+
+Customer_Order and Delivery:
+Delivery history must be preserved where it is required for tracking
+and audit.
+
+Implementation:
+Use appropriate foreign-key deletion behaviour, such as RESTRICT,
+where deletion would compromise historical integrity. Soft deletion
+or status changes may be preferable for business records.
+
+The final SQL implementation must define the exact ON DELETE and
+ON UPDATE actions for each foreign key.
+
+9. CONCLUSION
+
+The CloudMart database requires constraints at column, table, and
+relationship levels.
+
+Primary keys and foreign keys establish identity and referential
+integrity. UNIQUE, NOT NULL, and CHECK constraints prevent many
+invalid values. More complex rules, including address ownership,
+order submission requirements, and concurrent inventory updates,
+require additional database or transaction logic.
+
+These rules will guide the SQL implementation and subsequent
+transaction and concurrency exercises.

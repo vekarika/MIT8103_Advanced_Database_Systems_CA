@@ -1,0 +1,217 @@
+CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+DATABASE NORMALISATION
+
+1. INTRODUCTION
+
+Database normalisation is the process of organising data into related
+tables to reduce unnecessary duplication and prevent insertion,
+update, and deletion anomalies.
+
+For the CloudMart E-Commerce Management System, normalisation helps
+maintain consistent customer, product, order, payment, delivery, and
+inventory information.
+
+The design aims to satisfy First Normal Form (1NF), Second Normal
+Form (2NF), and Third Normal Form (3NF).
+
+2. FIRST NORMAL FORM (1NF)
+
+Definition:
+
+A relation is in First Normal Form when each attribute contains a
+single atomic value for each record and there are no repeating groups
+of attributes.
+
+Application to CloudMart:
+
+Customer contact details are stored in the Customer table.
+
+Product information is stored in the Product table.
+
+Each order item is stored as a separate record in Order_Item.
+
+An order containing three different products has three Order_Item
+records rather than storing all three products in a single field.
+
+Similarly, multiple customer addresses are stored as separate
+Address records linked to the customer.
+
+Why this matters:
+
+Storing multiple products or addresses in a single field would make
+searching, updating, and validating individual values difficult.
+
+The proposed design avoids these repeating groups by storing each
+order item and each address as a separate record.
+
+Conclusion:
+
+The proposed CloudMart design supports 1NF by representing individual
+values in separate attributes and using related records for repeating
+business information.
+
+3. SECOND NORMAL FORM (2NF)
+
+Definition:
+
+A relation is in Second Normal Form when it is in 1NF and every
+non-key attribute depends on the whole of every candidate key.
+This requirement is especially relevant to tables with composite keys.
+
+Application to CloudMart:
+
+The Order_Item table uses order_item_id as its primary key.
+
+Its attributes include order_id, product_id, quantity, and unit_price.
+
+The quantity and unit_price describe a particular product within a
+particular order. They are not simply attributes of the Product table
+because the same product can be purchased in different orders and
+at different prices.
+
+The Order_Item table separates order-line information from general
+product information.
+
+The Product table stores product attributes such as product_name,
+description, selling_price, and category_id.
+
+The Order table stores order-level attributes such as customer_id,
+delivery_address_id, order_date, and order_status.
+
+Why this matters:
+
+Separating order-level, product-level, and order-line information
+prevents product details from being unnecessarily repeated for every
+order and prevents order details from being duplicated across all
+items belonging to an order.
+
+Conclusion:
+
+The proposed structure supports 2NF by separating attributes according
+to the entities and business facts they describe.
+
+Because Order_Item uses a single-column primary key, a formal check
+of 2NF must also consider its candidate keys and any additional
+uniqueness rules.
+
+4. THIRD NORMAL FORM (3NF)
+
+Definition:
+
+A relation is in Third Normal Form when it is in 2NF and non-key
+attributes do not depend transitively on a key through another
+non-key attribute.
+
+Application to CloudMart:
+
+Customer information is stored in Customer rather than being repeated
+in every order record.
+
+Product information is stored in Product rather than being repeated
+in every Order_Item record.
+
+Category information is stored in Category, while Product contains
+category_id as a foreign key.
+
+This means category details do not need to be repeated for every
+product assigned to that category.
+
+Address information is stored in Address, while Customer_Order stores
+delivery_address_id to identify the selected delivery address.
+
+Payment information is stored in Payment rather than being embedded
+in the Customer_Order table. This supports multiple payment records
+for one order.
+
+Delivery information is stored in Delivery rather than being embedded
+in the Customer_Order table. This supports multiple delivery records
+for one order.
+
+Why this matters:
+
+These separations reduce duplication and help prevent update anomalies.
+For example, changing a category description requires updating the
+Category record rather than every product associated with that category.
+
+Conclusion:
+
+The proposed table structure is designed to support 3NF by separating
+customer, address, category, product, order, payment, and delivery
+facts into appropriate relations.
+
+The final normal-form claim must be validated against the complete
+functional dependencies and candidate keys of the implemented schema.
+
+5. INSERTION, UPDATE, AND DELETION ANOMALIES
+
+5.1 Insertion Anomaly
+
+Problem:
+If customer information and order information were stored in one large
+table, adding a customer who had not yet placed an order could require
+an incomplete order record or duplicated information.
+
+Solution:
+Customer information is stored separately from Customer_Order.
+
+5.2 Update Anomaly
+
+Problem:
+If a product's description were repeated in every order record, changing
+the description would require updating multiple records. Missing one
+record could produce inconsistent information.
+
+Solution:
+Product descriptions are stored in Product and referenced by product_id.
+
+5.3 Deletion Anomaly
+
+Problem:
+If customer details were stored only in an order table, deleting the
+customer's last order could unintentionally remove the only record of
+the customer's details.
+
+Solution:
+Customer records are stored separately from Customer_Order.
+
+6. DERIVED VALUES AND NORMALISATION
+
+CloudMart calculates the order-item subtotal as:
+
+Line Subtotal = quantity * unit_price
+
+The order total is calculated as the sum of the applicable order-item
+subtotals under the initial business assumptions.
+
+These values are treated as derived rather than independently
+maintained source values to reduce the risk of inconsistent totals.
+
+If a derived value is stored later for performance reasons, controlled
+database logic must keep it consistent with the underlying records.
+
+7. BENEFITS OF NORMALISATION TO CLOUDMART
+
+The proposed normalised design provides the following benefits:
+
+1. Reduces unnecessary duplication of customer and product information.
+2. Improves consistency when customer, product, and category details
+   change.
+3. Supports referential integrity through primary and foreign keys.
+4. Reduces insertion, update, and deletion anomalies.
+5. Supports multiple products per order.
+6. Supports multiple payment and delivery records per order.
+7. Makes the schema easier to maintain and extend.
+
+8. CONCLUSION
+
+Normalisation provides a structured approach to organising CloudMart's
+data.
+
+The proposed design uses separate relations for customers, addresses,
+categories, products, inventory, orders, order items, payments, and
+deliveries.
+
+The design is intended to support 1NF, 2NF, and 3NF. A rigorous
+confirmation requires identifying the functional dependencies and
+candidate keys for each relation and validating the final implemented
+schema against them.

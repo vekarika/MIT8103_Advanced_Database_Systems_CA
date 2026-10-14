@@ -1,0 +1,237 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 9: Entity and Attribute Analysis
+Case Study: CloudMart E-Commerce Management System
+
+Entity One: Customer
+Purpose
+
+The Customer entity represents individuals who register with CloudMart and use the platform to purchase products.
+
+The database must identify each customer uniquely and maintain the information needed to manage their account.
+
+Proposed Customer Attributes
+Attribute	Description	Required?	Unique?
+customer_id	Unique identifier for each customer	Yes	Yes
+first_name	Customer's first name	Yes	No
+last_name	Customer's last name	Yes	No
+email	Customer's email address	Yes	Yes, under our initial assumption
+phone	Customer's contact number	No	Not necessarily
+password_hash	Password hash used for authentication, if authentication credentials are stored in this database	Conditional	Not applicable
+created_at	Date and time the customer account was created	Yes	No
+status	Current account status	Yes	No
+Important design decisions
+
+1. Customer identifier
+
+customer_id will be the proposed primary key. It must uniquely identify each customer.
+
+2. Email address
+
+We will initially require each customer to have a unique email address. This is a business assumption for our simulated platform, not a requirement explicitly imposed by the CA brief.
+
+3. Phone number
+
+A phone number will be optional because a customer may be able to register without providing one. We can revise this if our business rules require it.
+
+4. Password handling
+
+We should not store plaintext passwords. If authentication is included in our database scope, the system must store an appropriate password hash rather than the original password.
+
+However, authentication implementation is not essential to the core database portfolio. We can omit password_hash from the final database if authentication is outside our chosen implementation scope.
+
+5. Account status
+
+The status could distinguish between active and inactive accounts. We will define the permitted status values when we develop the constraints.
+
+10.2 Entity Two: Address
+Purpose
+
+The Address entity stores addresses associated with customers and supports order fulfilment.
+
+A customer may have multiple addresses, so storing every address directly in the Customer record would make the design unnecessarily restrictive.
+
+Proposed Address Attributes
+Attribute	Description	Required?	Unique?
+address_id	Unique identifier for an address record	Yes	Yes
+customer_id	Identifies the customer associated with the address	Yes	No
+address_line	Street address or principal address details	Yes	No
+city	City or locality	Yes	No
+state_region	State, province, or region	Yes	No
+postal_code	Postal code, where applicable	No	No
+country	Country associated with the address	Yes	No
+address_type	Indicates billing, delivery, or another supported address type	Yes	No
+Design consideration
+
+We need to distinguish between a customer's saved address and the address actually used for an order.
+
+Suppose a customer orders a product using their home address and subsequently moves to another location.
+
+If the order simply references the customer's current address, the original delivery destination could be lost.
+
+We will address this when we refine the Order entity and define how historical order information is preserved.
+
+10.3 Entity Three: Category
+Purpose
+
+The Category entity organises products into groups.
+
+For example, CloudMart might use categories such as Electronics, Home Appliances, and Office Supplies.
+
+Proposed Category Attributes
+Attribute	Description	Required?	Unique?
+category_id	Unique identifier for a category	Yes	Yes
+category_name	Name of the category	Yes	Yes, under our initial assumption
+description	Explanation of the category	No	No
+
+The proposed category_id will be the primary key.
+
+We will initially assume that category names must be unique. Whether that is enforced globally or within a particular category hierarchy will depend on the final business rules.
+
+10.4 Entity Four: Product
+Purpose
+
+The Product entity maintains information about products CloudMart offers for sale.
+
+Proposed Product Attributes
+Attribute	Description	Required?	Unique?
+product_id	Unique identifier for a product	Yes	Yes
+category_id	Identifies the product's category	Yes	No
+product_name	Name of the product	Yes	No
+description	Product description	No	No
+selling_price	Current selling price	Yes	No
+status	Indicates whether the product is available for sale	Yes	No
+created_at	Date and time the product record was created	Yes	No
+Design consideration
+
+The category_id attribute will eventually become a foreign key referencing Category.
+
+The selling_price attribute represents the current catalogue price. We will separately preserve the applicable historical price in OrderItem so that subsequent price changes do not alter previous purchases.
+
+10.5 Entity Five: Inventory
+Purpose
+
+The Inventory entity represents the stock available for products.
+
+We are retaining it as a candidate entity, but we still need to validate whether it should be separate from Product.
+
+Proposed Inventory Attributes
+Attribute	Description	Required?	Unique?
+inventory_id	Unique identifier for an inventory record	Yes	Yes
+product_id	Identifies the product whose stock is tracked	Yes	Potentially, depending on the inventory model
+quantity_available	Quantity currently available for sale	Yes	No
+reorder_level	Stock quantity at which replenishment should be considered	Yes	No
+last_updated	Date and time of the most recent inventory update	Yes	No
+Design consideration
+
+We need to establish whether CloudMart tracks stock in one central location or across multiple warehouses.
+
+For the initial design, we will assume one central inventory location.
+
+Under that assumption, each product should have no more than one current inventory record. We could enforce this by making product_id unique in the Inventory table.
+
+If we later introduce multiple warehouses, the model will need to change.
+
+10.6 Entity Six: Order
+Purpose
+
+The Order entity represents a customer's purchase.
+
+It stores information about the overall order rather than the individual products contained within it.
+
+Proposed Order Attributes
+Attribute	Description	Required?	Unique?
+order_id	Unique identifier for an order	Yes	Yes
+customer_id	Identifies the customer who placed the order	Yes	No
+order_date	Date and time the order was created	Yes	No
+order_status	Current status of the order	Yes	No
+total_amount	Total amount payable for the order, subject to defined adjustments	Yes, once calculated	No
+Design considerations
+
+Customer relationship: Every order must reference an existing customer.
+
+Order status: We will define the allowed order statuses later.
+
+Order total: The total should agree with the order items and any explicitly defined adjustments.
+
+We must decide whether to store total_amount directly or calculate it when required. We will evaluate the trade-offs during normalisation and implementation design.
+
+Delivery address: We will also decide how the order preserves its delivery address at the time of purchase.
+
+10.7 Entity Seven: OrderItem
+Purpose
+
+The OrderItem entity represents an individual product entry within an order.
+
+It resolves the many-to-many relationship between orders and products.
+
+For example, one order might contain a laptop and two accessories. Each product entry would be represented by a separate order-item record.
+
+Proposed OrderItem Attributes
+Attribute	Description	Required?	Unique?
+order_item_id	Unique identifier for an order item	Yes	Yes
+order_id	Identifies the associated order	Yes	No
+product_id	Identifies the associated product	Yes	No
+quantity	Number of units ordered	Yes	No
+unit_price	Price per unit at the time of purchase	Yes	No
+line_subtotal	Subtotal for the order item	Yes, once calculated	No
+Design considerations
+
+The quantity must be greater than zero.
+
+The unit_price must preserve the applicable price at the time of purchase.
+
+The line subtotal can be calculated as:
+
+$$ \text{Line Subtotal} = \text{Quantity} \times \text{Unit Price} $$
+
+For example, if a customer orders three units at ₦25,000 each:
+
+$$ 3 \times ₦25,000 = ₦75,000 $$
+
+We will later decide whether line_subtotal should be stored or calculated when needed.
+
+10.8 Entity Eight: Payment
+Purpose
+
+The Payment entity records payment transactions associated with customer orders.
+
+We will allow for the possibility of multiple payment records per order because payment attempts can fail or be repeated.
+
+Proposed Payment Attributes
+Attribute	Description	Required?	Unique?
+payment_id	Unique identifier for a payment record	Yes	Yes
+order_id	Identifies the associated order	Yes	No
+amount	Amount associated with the payment record	Yes	No
+payment_method	Method used to make the payment	Yes	No
+transaction_reference	Reference identifying the payment transaction	Conditional	Should be unique when present, subject to the payment-provider rules
+payment_status	Status of the payment	Yes	No
+payment_date	Date and time of the payment event	Conditional	No
+Design consideration
+
+We must distinguish between an order's total amount and an individual payment amount.
+
+An order could have multiple payment attempts, but failed attempts must not be treated as successful payments.
+
+Our later business rules will determine how partial payments, refunds, and payment reconciliation are handled.
+
+10.9 Entity Nine: Delivery
+Purpose
+
+The Delivery entity maintains information about order fulfilment and delivery progress.
+
+Proposed Delivery Attributes
+Attribute	Description	Required?	Unique?
+delivery_id	Unique identifier for a delivery record	Yes	Yes
+order_id	Identifies the associated order	Yes	No
+tracking_number	Identifier used to track a shipment	Conditional	Yes when assigned, subject to carrier rules
+delivery_status	Current delivery status	Yes	No
+dispatch_date	Date and time the order was dispatched	No	No
+delivery_date	Date and time the order was delivered	No	No
+Design consideration
+
+For the initial model, we will allow an order to have multiple delivery records if the business needs to fulfil an order through separate shipments.
+
+We will validate that decision against the final scope and business rules.
+
+The initial attribute analysis identifies the information required by the nine candidate entities in the CloudMart E-Commerce Management System. The proposed attributes reflect the documented data requirements and business rules. Further refinement will establish the final primary keys, foreign keys, data types, nullability, constraints, and relationships. Derived attributes and potential redundancy will be evaluated during normalisation.

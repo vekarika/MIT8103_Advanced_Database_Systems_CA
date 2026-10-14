@@ -1,0 +1,41 @@
+# Credentials and environment configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials/
+
+# Database backups and local database files
+*.dump
+*.backup
+*.bak
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+~$*
+
+# Operating system files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor and IDE settings
+.vscode/
+.idea/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+
+# Node.js dependencies
+node_modules/
+
+# PostgreSQL local configuration
+postgresql.conf
+pg_hba.conf

@@ -1,0 +1,58 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 8: Entity Identification
+8.1 Introduction
+
+Entity identification is the process of determining the principal objects and concepts about which the CloudMart database must store information.
+
+The candidate entities have been derived from the documented case study, business problems, data requirements, functional requirements, and business rules.
+
+8.2 Identified Entities
+
+Customer: Represents individuals who use CloudMart to purchase products. It maintains customer identity and account information.
+
+Address: Represents addresses associated with customers and order fulfilment. The design must consider how order-specific address information is preserved.
+
+Category: Represents product classifications used to organise the product catalogue.
+
+Product: Represents products offered for sale and maintains their descriptive and commercial information.
+
+Inventory: Represents stock information associated with products. Its separation from Product will be evaluated during detailed modelling.
+
+Order: Represents a customer purchase and maintains information about the overall transaction.
+
+OrderItem: Represents an individual product entry within an order, including the quantity and applicable unit price.
+
+Payment: Represents payment transaction records associated with orders.
+
+Delivery: Represents delivery information associated with order fulfilment.
+
+8.3 Entity Selection Justification
+
+The selected candidate entities correspond to distinct business responsibilities within CloudMart.
+
+Customer and Address support customer information management. Category and Product support the product catalogue. Inventory supports stock management. Order and OrderItem represent purchases and their contents. Payment supports transaction reconciliation, while Delivery supports fulfilment tracking.
+
+Separating these concepts provides a foundation for defining their attributes, relationships, and integrity constraints.
+
+8.4 Design Considerations
+
+Several design decisions require further analysis.
+
+First, the design must establish how saved customer addresses relate to order-specific delivery addresses.
+
+Second, it must determine whether inventory should be maintained as a separate entity or as part of Product.
+
+Third, the payment model must accommodate the payment-record cardinality defined by the business requirements.
+
+Finally, the delivery model must establish whether an order may have multiple deliveries.
+
+These decisions will be resolved during attribute analysis, business-rule refinement, relationship modelling, and normalisation.
+
+8.5 Summary
+
+Nine candidate entities have been identified for the CloudMart E-Commerce Management System.
+
+The next stage will identify the attributes required by each entity and establish the information each attribute represents.
+
+The entity model will be refined as additional design decisions are evaluated.

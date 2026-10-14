@@ -1,0 +1,54 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 10: Relationship and Cardinality Analysis
+10.1 Introduction
+
+Relationship analysis establishes how the identified CloudMart entities are associated and defines the cardinality of each relationship.
+
+The relationships are derived from the case study requirements and business rules. They will guide the construction of the ER diagram and relational schema.
+
+10.2 Customer and Order
+
+One customer may place multiple orders, while each order belongs to one customer. This is a one-to-many relationship implemented through a customer foreign key in the Order entity.
+
+10.3 Customer and Address
+
+One customer may maintain multiple saved addresses, while each saved address belongs to one customer. This is a one-to-many relationship implemented through a customer foreign key in Address.
+
+The design must separately account for preserving the address applicable to an order.
+
+10.4 Category and Product
+
+One category may contain multiple products, while each product belongs to one category under the initial design assumptions. This is a one-to-many relationship implemented through a category foreign key in Product.
+
+10.5 Product and Inventory
+
+Each product has one inventory record under the initial single-location design. This is a one-to-one relationship, enforced through a product foreign key in Inventory and a uniqueness constraint on that reference.
+
+10.6 Order and OrderItem
+
+One order may contain multiple order items, and each order item belongs to one order. This is a one-to-many relationship implemented through an order foreign key in OrderItem.
+
+A submitted order must contain at least one item. This minimum participation rule requires enforcement beyond a basic foreign key.
+
+10.7 Product and OrderItem
+
+One product may appear in multiple order items, while each order item references one product. This is a one-to-many relationship implemented through a product foreign key in OrderItem.
+
+The OrderItem entity resolves the many-to-many relationship between Order and Product.
+
+10.8 Order and Payment
+
+One order may have multiple payment records, while each payment record belongs to one order. This is a one-to-many relationship implemented through an order foreign key in Payment.
+
+Payment status must be considered when reconciling payments with orders.
+
+10.9 Order and Delivery
+
+One order may have multiple delivery records under the initial split-delivery assumption, while each delivery record belongs to one order. This is a one-to-many relationship implemented through an order foreign key in Delivery.
+
+10.10 Summary
+
+Eight relationships have been identified for the initial CloudMart conceptual model. Their cardinalities and foreign key locations provide the foundation for the ER diagram and relational schema.
+
+The final design will be validated against the business rules and refined where necessary.

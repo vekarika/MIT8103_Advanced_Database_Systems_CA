@@ -1,0 +1,90 @@
+MIT 8103: ADVANCED DATABASE SYSTEMS
+PORTFOLIO 1: DATABASE DESIGN AND MODELLING
+
+PROJECT: CLOUDMART E-COMMERCE MANAGEMENT SYSTEM
+
+DATABASE CONSTRAINT TEST RESULTS
+
+1. PURPOSE
+
+The purpose of these tests was to verify that the CloudMart
+PostgreSQL database enforces data integrity rules and rejects
+invalid data modifications.
+
+2. TEST 1: UNIQUE CUSTOMER EMAIL
+
+Test performed:
+Attempted to insert a customer using an email address that
+already existed in the customer table.
+
+Expected result:
+PostgreSQL should reject the duplicate email address.
+
+Actual result:
+The insert was rejected with a duplicate key violation for
+the customer_email_key constraint.
+
+Conclusion:
+PASS. The unique email constraint prevents duplicate customer
+email addresses.
+
+3. TEST 2: NON-NEGATIVE INVENTORY
+
+Test performed:
+Attempted to update product 1's available inventory quantity
+to -5.
+
+Expected result:
+PostgreSQL should reject negative inventory quantities.
+
+Actual result:
+The update was rejected because it violated the
+chk_inventory_quantity check constraint.
+
+Conclusion:
+PASS. The inventory check constraint prevents negative
+available quantities.
+
+4. TEST 3: DELIVERY ADDRESS OWNERSHIP
+
+Test performed:
+Attempted to assign address ID 3 to order ID 1, although the
+address belongs to a different customer.
+
+Expected result:
+PostgreSQL should reject the mismatched customer and address.
+
+Actual result:
+The update was rejected by the
+fk_order_delivery_address_owner foreign key constraint.
+
+Conclusion:
+PASS. The composite foreign key enforces delivery address
+ownership for customer orders.
+
+5. POST-TEST VERIFICATION
+
+After the failed update attempts, the database was queried
+to verify that existing records remained unchanged.
+
+Results:
+- Product 1 quantity_available remained 25.
+- Order 1 delivery_address_id remained 1.
+
+Conclusion:
+The rejected updates did not modify the existing records.
+
+6. OVERALL CONCLUSION
+
+All three database integrity tests produced the expected
+results. PostgreSQL enforced the unique email, inventory
+quantity, and delivery address ownership constraints.
+
+These tests demonstrate the effectiveness of the implemented
+integrity constraints in protecting the consistency of the
+CloudMart database.
+
+EVIDENCE NOTE
+
+The actual PostgreSQL command outputs should be captured and
+saved alongside this report as screenshots or terminal output.

@@ -1,0 +1,85 @@
+MIT8103 ADVANCED DATABASE SYSTEMS
+PORTFOLIO 1: DATABASE DESIGN AND MODELLING
+CONSISTENCY REVIEW CHECKLIST
+
+CASE STUDY
+[ ] The case study describes the CloudMart business scenario.
+[ ] The business problem is clearly explained.
+[ ] The project scope and limitations are documented.
+[ ] The intended database users are identified.
+[ ] CloudMart is used consistently throughout Portfolio 1.
+
+REQUIREMENTS
+[ ] Data requirements are documented.
+[ ] Functional requirements are documented.
+[ ] Business rules are documented.
+[ ] Requirements are consistent with the case study.
+
+ENTITY AND RELATIONSHIP ANALYSIS
+[ ] All nine entities are documented.
+[ ] Attributes are assigned to appropriate entities.
+[ ] Primary keys are identified.
+[ ] Foreign keys are identified.
+[ ] Relationship cardinalities are documented.
+[ ] The many-to-many relationship between orders and products
+    is resolved through Order_Item.
+[ ] The address ownership rule is documented.
+[ ] The single-central-inventory-location assumption is documented.
+
+ER DIAGRAM
+[ ] The Mermaid source file is saved.
+[ ] The exported ER diagram is saved.
+[ ] The diagram contains all nine entities.
+[ ] Primary keys and foreign keys are shown.
+[ ] Relationship cardinalities match the relationship analysis.
+[ ] The diagram is readable and has no rendering errors.
+
+RELATIONAL SCHEMA
+[ ] All nine tables are documented.
+[ ] Each table has a primary key.
+[ ] Foreign keys match the ER diagram.
+[ ] Unique constraints are documented.
+[ ] Derived values are identified.
+[ ] The relational schema agrees with the entity analysis.
+
+CONSTRAINTS
+[ ] Primary-key constraints are documented.
+[ ] Foreign-key constraints are documented.
+[ ] Unique constraints are documented.
+[ ] NOT NULL requirements are documented.
+[ ] CHECK constraints are proposed where appropriate.
+[ ] Cross-table business rules are identified.
+[ ] Update and deletion behaviour is considered.
+
+NORMALISATION
+[ ] First Normal Form is explained.
+[ ] Second Normal Form is explained.
+[ ] Third Normal Form is explained.
+[ ] Insertion, update, and deletion anomalies are explained.
+[ ] Normalisation decisions are connected to CloudMart.
+[ ] Functional dependencies and candidate keys will be validated
+    before making a definitive normal-form claim.
+
+EVIDENCE AND SUBMISSION
+[ ] The required portfolio evidence is identified.
+[ ] Evidence is genuine and reflects the actual work completed.
+[ ] Relevant sources are recorded.
+[ ] AI assistance is declared where required by the assessment rules.
+[ ] The work is prepared for version control and GitHub submission.
+[ ] The final submission will be checked against the official rubric.
+
+REVIEW STATUS
+
+Files present: __________________________
+
+ER diagram verified: ____________________
+
+Schema consistency verified: _____________
+
+Constraints reviewed: ___________________
+
+Normalisation reviewed: _________________
+
+Outstanding issues: _____________________
+
+Final review date: ______________________

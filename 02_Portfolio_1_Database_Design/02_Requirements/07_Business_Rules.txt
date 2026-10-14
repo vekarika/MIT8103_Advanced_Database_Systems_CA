@@ -1,0 +1,56 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 7: Business Rules
+7.1 Introduction
+
+Business rules define the conditions and restrictions governing CloudMart's data and operations. They establish the requirements that the database design must satisfy to maintain data integrity and support reliable business processes.
+
+The rules cover customer management, products, categories, inventory, orders, order items, payments, and deliveries.
+
+7.2 Customer Rules
+
+Each customer must have a unique identifier. Customer email addresses must follow the defined validation rules. A customer may maintain multiple addresses, and every address must be associated with an existing customer.
+
+7.3 Product and Category Rules
+
+Each product must have a unique identifier and a non-negative selling price. Products must reference valid categories under the initial design assumptions. A category may contain multiple products.
+
+7.4 Inventory Rules
+
+Inventory records must reference valid products. Inventory quantities must not become negative under the initial business assumptions. Inventory adjustments must be authorised and must preserve consistency during order processing.
+
+7.5 Order Rules
+
+Each order must have a unique identifier and reference an existing customer. An order must contain at least one order item before submission.
+
+Each order item must reference a valid order and product and must have a positive quantity. The applicable unit price must be preserved at the time of purchase.
+
+Order totals must be consistent with the order items and any explicitly defined adjustments.
+
+7.6 Payment Rules
+
+Each payment record must have a unique identifier and reference an existing order. Payment amounts must be positive, and payment statuses must follow defined values.
+
+The database must support reconciliation of payment records with orders. The final design will determine how multiple payment attempts, partial payments, and refunds are represented.
+
+7.7 Delivery Rules
+
+Each delivery record must have a unique identifier and reference an existing order. Delivery records must maintain a defined status and remain associated with the relevant order.
+
+Authorised users must perform delivery-status updates.
+
+7.8 Integrity and Enforcement
+
+The business rules will be translated into appropriate database keys, constraints, and transaction controls.
+
+Primary keys and foreign keys will support record identification and referential integrity. Check constraints will validate applicable values, while transaction logic will address operations that require coordinated changes across multiple records.
+
+Access controls will restrict sensitive operations to authorised users.
+
+7.9 Summary
+
+The defined business rules establish the conditions the CloudMart database must satisfy.
+
+They will guide entity identification, relationship modelling, relational schema development, constraint definition, and subsequent transaction testing.
+
+Some rules remain provisional and will be refined as the detailed database design develops.

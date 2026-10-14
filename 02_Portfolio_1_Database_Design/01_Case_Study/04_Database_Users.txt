@@ -1,0 +1,82 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 4: Database Users and Responsibilities
+4.1 Introduction
+
+The CloudMart E-Commerce Management System will support several categories of users, each with different operational responsibilities and information requirements.
+
+Identifying these users is necessary to understand how the database will be accessed, what operations it must support, and which information each role should be authorised to access.
+
+The proposed user groups include customers, sales and order staff, inventory managers, finance and payment staff, delivery staff, system administrators, and management.
+
+4.2 Customer
+
+Customers interact with the e-commerce platform to browse available products, maintain their account information, place orders, and review their order histories.
+
+The database must support the retrieval of product information and authorised access to customer-specific records.
+
+Customer access should be restricted to information they are authorised to view or modify.
+
+4.3 Sales and Order Staff
+
+Sales and order staff are responsible for reviewing and managing customer orders.
+
+Their activities include retrieving order information, reviewing associated order items, and performing authorised order-status updates.
+
+The database must maintain the relationships between customers, orders, and order items to support these operations.
+
+4.4 Inventory Manager
+
+The inventory manager maintains product information and monitors stock quantities.
+
+The database must support product creation and updates, category assignment, inventory retrieval, and authorised stock adjustments.
+
+Inventory updates must preserve data integrity and account for concurrent operations where applicable.
+
+4.5 Finance and Payment Staff
+
+Finance and payment staff review payment records and reconcile payments with customer orders.
+
+The database must support the retrieval of payment amounts, transaction references, payment methods, and payment statuses.
+
+Payment records must be associated with the relevant orders, and updates must follow appropriate authorisation and transaction-control rules.
+
+4.6 Delivery Staff
+
+Delivery staff access delivery assignments and update delivery progress.
+
+The database must support the retrieval of delivery details, tracking references, and delivery statuses.
+
+Delivery information must be linked to the appropriate orders to support order fulfilment and tracking.
+
+4.7 System Administrator
+
+The system administrator manages the technical administration of the database.
+
+Responsibilities include managing database accounts, assigning appropriate permissions, maintaining configuration, and supporting database operations.
+
+Administrative privileges must be controlled to reduce the risk of unauthorised access or modification.
+
+4.8 Management
+
+Management requires access to authorised operational reports to support business decisions.
+
+These reports may include sales summaries, product performance, inventory levels, and order statistics.
+
+The database should support efficient retrieval and aggregation of relevant information.
+
+4.9 Access-Control Considerations
+
+The database should apply the principle of least privilege, under which each user receives only the permissions necessary to perform their assigned responsibilities.
+
+Customer information and payment records should be protected from unauthorised access.
+
+Administrative operations should be restricted to appropriately authorised users.
+
+The final database implementation will determine how these requirements are enforced through database permissions and any application-level controls.
+
+4.10 Summary
+
+The identification of CloudMart's database users establishes the operational and access requirements that will guide subsequent database design.
+
+These user responsibilities will inform the data requirements, functional requirements, business rules, and security considerations developed in the following stages of Portfolio 1.

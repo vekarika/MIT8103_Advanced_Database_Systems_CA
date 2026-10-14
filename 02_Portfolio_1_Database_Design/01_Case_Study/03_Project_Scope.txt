@@ -1,0 +1,86 @@
+MIT 8103 — Advanced Database Systems
+Portfolio 1: Database Design and Modelling
+Section 3: Project Scope
+3.1 Project Overview
+
+The CloudMart E-Commerce Management System database project focuses on designing and evaluating a database that supports the core operations of a simulated online retail business.
+
+The project will translate CloudMart's business requirements into a structured database model. It will address data organisation, relationships, integrity constraints, transaction reliability, and efficient data retrieval.
+
+The database design will also provide a foundation for the practical exercises required in the remaining MIT 8103 portfolio activities.
+
+3.2 In-Scope Functions
+
+The following functions are included in the project scope.
+
+No.	Function	Description
+1	Customer management	Store and maintain customer information.
+2	Address management	Maintain customer addresses required for order fulfilment.
+3	Product management	Store product descriptions, prices, and related information.
+4	Category management	Organise products into categories.
+5	Inventory management	Track product stock quantities and inventory changes.
+6	Order management	Create and maintain customer order records.
+7	Order-item management	Record the products and quantities associated with each order.
+8	Payment records	Maintain payment amounts, references, and statuses.
+9	Delivery management	Maintain delivery information and tracking statuses.
+10	Data integrity	Apply keys, constraints, and appropriate validation rules.
+11	Query processing	Develop SQL queries and evaluate their execution.
+12	Transaction management	Demonstrate transaction control and concurrency considerations.
+13	NoSQL modelling	Explore an appropriate NoSQL representation of selected CloudMart data.
+14	Distributed/cloud databases	Evaluate suitable distributed or cloud database concepts.
+3.3 Out-of-Scope Functions
+
+The following functions are excluded from the initial implementation.
+
+No.	Function	Reason for Exclusion
+1	Customer-facing website	The assessment focuses on database design and implementation rather than frontend development.
+2	Native mobile application	Mobile application development is outside the database portfolio's primary scope.
+3	Live payment gateway integration	The project can demonstrate payment records and transaction logic without processing real payments.
+4	Actual courier integration	Delivery records and status updates can be modelled without connecting to an external courier service.
+5	Production deployment for real customers	The project is an academic database exercise using a simulated organisation.
+6	Real customer financial data	The project will use synthetic or otherwise appropriately authorised test data.
+
+These exclusions limit implementation complexity while allowing the database to demonstrate the concepts required by the assessment.
+
+3.4 Technical Scope
+
+The project will include conceptual database design, relational schema development, key and constraint definition, and normalisation.
+
+Practical database implementation will be developed as the portfolio progresses.
+
+SQL query optimisation, transaction and concurrency testing, NoSQL modelling, and distributed or cloud database evaluation will be addressed in the relevant portfolio activities.
+
+The final technology choices will be based on the requirements, available tools, and practical feasibility.
+
+3.5 Project Assumptions
+
+The following assumptions will guide the initial design:
+
+CloudMart is a simulated online retail organisation.
+Each customer has a unique identifier.
+Each product has a unique identifier.
+Customers can place multiple orders.
+An order can contain multiple order items.
+Each order item refers to a product.
+Orders and payment records must be linked through defined relationships.
+Delivery records must be associated with the relevant orders.
+Inventory quantities must be maintained consistently.
+Database constraints will be used to prevent invalid references and enforce applicable business rules.
+Test data will be used to demonstrate the database operations.
+The design will be refined as detailed requirements and relationships are established.
+
+These assumptions are provisional and will be validated during the subsequent design stages.
+
+3.6 Project Limitations
+
+The system is an academic simulation and will not initially operate as a production e-commerce platform.
+
+Its results will depend on the quality of the database design, test data, queries, and evaluation methods used.
+
+Any performance conclusions will be based on the actual tests performed and their documented conditions. The project will not claim production-scale performance or availability without corresponding evidence.
+
+3.7 Scope Summary
+
+The CloudMart database project will focus on creating a structured and maintainable database model for the core operations of an e-commerce business.
+
+The design will establish the foundation for implementing and evaluating relational database functionality and advanced database concepts throughout the MIT 8103 Continuous Assessment.

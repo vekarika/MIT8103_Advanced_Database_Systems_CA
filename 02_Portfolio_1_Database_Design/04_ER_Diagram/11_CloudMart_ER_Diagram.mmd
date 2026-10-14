@@ -1,0 +1,92 @@
+erDiagram
+
+    CUSTOMER ||--o{ ADDRESS : maintains
+    CUSTOMER ||--o{ CUSTOMER_ORDER : places
+    ADDRESS ||--o{ CUSTOMER_ORDER : "delivery address for"
+    CATEGORY ||--o{ PRODUCT : contains
+    PRODUCT ||--|| INVENTORY : has
+    CUSTOMER_ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : appears_in
+    CUSTOMER_ORDER ||--o{ PAYMENT : has
+    CUSTOMER_ORDER ||--o{ DELIVERY : fulfilled_by
+
+    CUSTOMER {
+        int customer_id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone
+        string password_hash
+        datetime created_at
+        string status
+    }
+
+    ADDRESS {
+        int address_id PK
+        int customer_id FK
+        string address_line
+        string city
+        string state_region
+        string postal_code
+        string country
+        string address_type
+    }
+
+    CATEGORY {
+        int category_id PK
+        string category_name
+        string description
+    }
+
+    PRODUCT {
+        int product_id PK
+        int category_id FK
+        string product_name
+        string description
+        decimal selling_price
+        string status
+        datetime created_at
+    }
+
+    INVENTORY {
+        int inventory_id PK
+        int product_id FK
+        int quantity_available
+        int reorder_level
+        datetime last_updated
+    }
+
+    CUSTOMER_ORDER {
+        int order_id PK
+        int customer_id FK
+        int delivery_address_id FK
+        datetime order_date
+        string order_status
+    }
+
+    ORDER_ITEM {
+        int order_item_id PK
+        int order_id FK
+        int product_id FK
+        int quantity
+        decimal unit_price
+    }
+
+    PAYMENT {
+        int payment_id PK
+        int order_id FK
+        decimal amount
+        string payment_method
+        string transaction_reference
+        string payment_status
+        datetime payment_date
+    }
+
+    DELIVERY {
+        int delivery_id PK
+        int order_id FK
+        string tracking_number
+        string delivery_status
+        datetime dispatch_date
+        datetime delivery_date
+    }
