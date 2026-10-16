@@ -1,0 +1,14 @@
+PORTFOLIO 3 — EVIDENCE CHECKLIST
+
+[ ] 1. COMMIT transaction test showing successful execution.
+[ ] 2. ROLLBACK test showing records_after_rollback = 0.
+[ ] 3. Transaction isolation test showing the initial value.
+[ ] 4. Transaction isolation test showing the updated value in Session A.
+[ ] 5. Inventory deduction showing quantity reduced from 5 to 2.
+[ ] 6. Constraint violation showing negative inventory rejected.
+[ ] 7. Session A acquiring the row lock using SELECT ... FOR UPDATE.
+[ ] 8. Session B waiting for the competing inventory update.
+[ ] 9. Final inventory quantity of 2 and successful transaction commit.
+
+Save screenshots in this folder using descriptive filenames.
+Do not mark an item complete until its screenshot has been saved.
