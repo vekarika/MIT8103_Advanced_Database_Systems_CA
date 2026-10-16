@@ -1,0 +1,61 @@
+PORTFOLIO 3: INVENTORY ROW-LOCKING ANALYSIS
+
+Database: cloudmart_db
+DBMS: PostgreSQL 18.6
+Test Table: inventory_concurrency_test
+Test Type: Two-session row-level locking
+
+OBJECTIVE
+To demonstrate how PostgreSQL coordinates concurrent transactions
+that attempt to update the same inventory record.
+
+INITIAL STATE
+Product ID: 9001
+Initial quantity: 5 units
+
+TEST PROCEDURE
+1. Session A began a transaction.
+2. Session A selected product 9001 using SELECT ... FOR UPDATE.
+3. Session A acquired a row-level lock on the inventory record.
+4. Session B began a separate transaction.
+5. Session B attempted to deduct 3 units using a guarded UPDATE.
+6. Session B's UPDATE waited while Session A held the row lock.
+7. Session A committed its transaction and released the lock.
+8. Session B's UPDATE completed successfully.
+9. Session B queried the record and observed a quantity of 2.
+10. Session B committed its transaction.
+
+OBSERVED RESULTS
+Session A acquired the row lock successfully.
+Session B's UPDATE waited for the lock to be released.
+After Session A committed, Session B's UPDATE affected one row.
+The resulting quantity was 2 units.
+Session B committed successfully.
+
+ANALYSIS
+PostgreSQL uses row-level locks to coordinate conflicting updates.
+SELECT ... FOR UPDATE locks the selected row until the transaction
+ends. A competing transaction attempting to update that row waits
+until the lock is released.
+
+The guarded UPDATE includes the condition quantity >= 3.
+This condition helps prevent a deduction when sufficient stock is
+unavailable. The CHECK constraint independently prevents a negative
+quantity from being stored.
+
+CONCLUSION
+The test demonstrated row-lock coordination between two database
+sessions and a successful inventory deduction after the lock was
+released.
+
+LIMITATION
+This test demonstrated one competing update waiting for a row lock.
+It did not demonstrate two simultaneous deductions whose combined
+requested quantities exceed the available inventory.
+
+EVIDENCE
+Capture screenshots showing:
+1. Session A acquiring the row lock.
+2. Session B waiting on its UPDATE.
+3. Session B returning UPDATE 1 and showing quantity 2.
+4. Session B committing the transaction.

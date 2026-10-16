@@ -1,0 +1,48 @@
+MIT 8103: ADVANCED DATABASE SYSTEMS
+PORTFOLIO 3: TRANSACTIONS AND CONCURRENCY
+
+Case Study:
+CloudMart E-Commerce Management System
+
+Database:
+PostgreSQL 18
+Database name: cloudmart_db
+
+OBJECTIVE
+Demonstrate how database transactions protect the consistency
+and reliability of CloudMart order processing.
+
+REQUIRED PRACTICAL DEMONSTRATIONS
+
+1. COMMIT
+Demonstrate a successful transaction and verify that its changes
+persist after COMMIT.
+
+2. ROLLBACK
+Demonstrate a transaction that is rolled back and verify that its
+uncommitted changes are not retained.
+
+3. TRANSACTION ISOLATION
+Demonstrate transaction isolation using separate database
+sessions and explain the observed behaviour.
+
+4. CONCURRENCY ISSUE OR CONTROL MECHANISM
+Demonstrate a relevant concurrency scenario, such as concurrent
+inventory updates, and test an appropriate control mechanism.
+
+5. EVIDENCE
+Save SQL scripts, execution results, screenshots, and concise
+explanations of the observed outcomes.
+
+IMPLEMENTATION REQUIREMENTS
+- Use the existing CloudMart database and schema.
+- Preserve the existing Portfolio 1 and Portfolio 2 data.
+- Use controlled test data for transaction experiments.
+- Verify database state before and after each test.
+- Record actual results rather than assuming expected outcomes.
+
+ASSESSMENT WEIGHT
+7 marks.
+
+STATUS
+Requirements documented; practical implementation pending.

@@ -1,0 +1,41 @@
+PORTFOLIO 3: TRANSACTION ISOLATION ANALYSIS
+
+Database: cloudmart_db
+DBMS: PostgreSQL 18.6
+Isolation Level: READ COMMITTED
+Test Type: Non-repeatable Read
+
+OBJECTIVE
+To demonstrate how PostgreSQL's READ COMMITTED isolation level
+handles successive reads of the same record when another
+transaction modifies and commits an update.
+
+TEST PROCEDURE
+1. Reset test_id 1 to 'Initial value'.
+2. In Session A, begin a transaction using READ COMMITTED.
+3. Session A reads test_id 1 and returns 'Initial value'.
+4. In Session B, update test_id 1 to 'Updated by Session B'.
+5. Session B commits the update.
+6. Session A queries the same record again.
+7. Session A returns 'Updated by Session B' and commits.
+
+OBSERVED RESULTS
+The first SELECT in Session A returned 'Initial value'.
+Session B successfully updated and committed the new value.
+The second SELECT in Session A returned 'Updated by Session B'.
+
+ANALYSIS
+The results demonstrate a non-repeatable read under READ COMMITTED.
+PostgreSQL obtains a new snapshot for each statement at this
+isolation level. Consequently, a later SELECT can see a value
+committed by another transaction after an earlier SELECT.
+
+CONCLUSION
+The test successfully demonstrated READ COMMITTED behaviour
+using two concurrent database sessions.
+
+EVIDENCE
+Capture screenshots showing:
+1. Session A's first SELECT returning 'Initial value'.
+2. Session B's successful UPDATE and COMMIT.
+3. Session A's second SELECT returning 'Updated by Session B'.

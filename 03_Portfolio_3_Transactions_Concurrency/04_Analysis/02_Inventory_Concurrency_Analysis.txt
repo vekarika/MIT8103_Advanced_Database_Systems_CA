@@ -1,0 +1,57 @@
+PORTFOLIO 3: INVENTORY CONCURRENCY AND INTEGRITY ANALYSIS
+
+Database: cloudmart_db
+DBMS: PostgreSQL 18.6
+Test Table: inventory_concurrency_test
+
+OBJECTIVE
+To verify that CloudMart can deduct inventory safely and reject
+updates that would create a negative stock quantity.
+
+TEST 1: GUARDED STOCK DEDUCTION
+Initial quantity: 5
+Requested deduction: 3
+SQL condition: quantity >= 3
+
+Observed result:
+The UPDATE affected one row. The quantity changed from 5 to 2.
+The transaction committed successfully, and a subsequent query
+confirmed that the committed quantity remained 2.
+
+TEST 2: NEGATIVE-STOCK CONSTRAINT
+Attempted operation:
+Subtract 5 units from the current quantity of 2.
+
+Expected result:
+The database should reject the update because the resulting
+quantity would be -3.
+
+Observed result:
+PostgreSQL rejected the update with a check-constraint violation.
+The constraint was named inventory_concurrency_test_quantity_check.
+
+ANALYSIS
+The guarded UPDATE checks whether sufficient stock is available
+before deducting the requested quantity. The CHECK constraint
+provides an additional database-level safeguard against negative
+inventory.
+
+The guarded UPDATE and CHECK constraint serve different purposes:
+the WHERE condition prevents an insufficient-stock deduction from
+matching the row, while the CHECK constraint rejects any resulting
+row whose quantity is negative.
+
+LIMITATION
+These tests verify guarded stock deduction and constraint
+enforcement. They do not, by themselves, demonstrate two concurrent
+sessions competing to update the same inventory record.
+
+CONCLUSION
+Both inventory integrity tests produced the expected results.
+The stock deduction committed successfully, and PostgreSQL rejected
+the attempted negative quantity.
+
+EVIDENCE
+Capture screenshots showing:
+1. Initial quantity of 5 and committed quantity of 2.
+2. The rejected update and PostgreSQL check-constraint error.
