@@ -100,8 +100,8 @@ Customer:
 customer_id, first_name, last_name, email, created_at, status.
 
 Address:
-address_id, customer_id, address_line, city, state_region, country,
-address_type.
+address_id, customer_id, address_line, city, country, address_type.
+state_region and postal_code are optional in the current SQL implementation.
 
 Category:
 category_id, category_name.
