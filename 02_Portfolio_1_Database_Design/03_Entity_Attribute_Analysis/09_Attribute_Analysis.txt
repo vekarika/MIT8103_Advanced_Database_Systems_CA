@@ -128,7 +128,7 @@ We need to establish whether CloudMart tracks stock in one central location or a
 
 For the initial design, we will assume one central inventory location.
 
-Under that assumption, each product should have no more than one current inventory record. We could enforce this by making product_id unique in the Inventory table.
+Under that assumption, each product may have zero or one current inventory record. A product can be registered before its inventory record is configured; however, business logic should prevent it from becoming available for sale until inventory is configured. We can enforce the maximum of one inventory record by making product_id unique in the Inventory table.
 
 If we later introduce multiple warehouses, the model will need to change.
 
