@@ -131,7 +131,11 @@ Stores the available quantity and reorder level for each product.
 
 Design Assumption:
 CloudMart initially operates a single central inventory location.
-Each product must have exactly one inventory record.
+Each product may have zero or one inventory record. Each inventory
+record must reference one existing product. A UNIQUE constraint on
+Inventory.product_id prevents more than one inventory record per product.
+A product should not be made available for sale until its inventory
+record has been configured.
 
 3.6 CUSTOMER_ORDER
 
