@@ -23,7 +23,9 @@ One category may contain multiple products, while each product belongs to one ca
 
 10.5 Product and Inventory
 
-Each product has one inventory record under the initial single-location design. This is a one-to-one relationship, enforced through a product foreign key in Inventory and a uniqueness constraint on that reference.
+Under the initial single-location design, each product may have zero or one inventory record, while each inventory record must reference exactly one product. This is an optional one-to-one relationship from Product to Inventory. A UNIQUE constraint on Inventory.product_id prevents multiple inventory records for the same product.
+
+The database does not require every product to have an inventory record immediately. CloudMart may register a product before its stock record is configured. Business logic should prevent a product from becoming available for sale until inventory is configured.
 
 10.6 Order and OrderItem
 
