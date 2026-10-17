@@ -4,7 +4,7 @@ erDiagram
     CUSTOMER ||--o{ CUSTOMER_ORDER : places
     ADDRESS ||--o{ CUSTOMER_ORDER : "delivery address for"
     CATEGORY ||--o{ PRODUCT : contains
-    PRODUCT ||--|| INVENTORY : has
+    PRODUCT ||--o| INVENTORY : has
     CUSTOMER_ORDER ||--|{ ORDER_ITEM : contains
     PRODUCT ||--o{ ORDER_ITEM : appears_in
     CUSTOMER_ORDER ||--o{ PAYMENT : has
