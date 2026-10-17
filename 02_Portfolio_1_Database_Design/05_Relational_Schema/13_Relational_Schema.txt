@@ -283,7 +283,7 @@ to enforce business rules that involve multiple tables.
 
 1. Each customer has a unique email address.
 2. Each product belongs to one category.
-3. Each product has exactly one inventory record in the initial model.
+3. Each product may have zero or one inventory record in the initial model.
 4. An order belongs to one customer.
 5. Each order references one delivery address belonging to that customer.
 6. An order contains one or more order items when submitted.
